@@ -38,19 +38,28 @@ public class OrderingCardDeliveryTest {
         $("[data-test-id='phone'] input").setValue(registration.getPhone());
         $("[data-test-id='agreement']").click();
         $$("button").find(Condition.text("Запланировать")).click();
+
+        // Исправлено: добавлена проверка видимости элемента перед проверкой текста
         $("[data-test-id='success-notification']")
+                .should(Condition.visible) // Добавлено: проверка видимости
                 .should(Condition.text("Успешно!"))
                 .should(Condition.text("Встреча успешно запланирована на " + dateFirst));
 
         $("[data-test-id='date'] input").press(Keys.CONTROL + "a", Keys.BACK_SPACE);
         $("[data-test-id='date'] input").setValue(dataSecond);
         $$("button").find(Condition.text("Запланировать")).click();
+
+        // Исправлено: проверка видимости перенесена в начало
         $("[data-test-id='replan-notification']")
+                .should(Condition.visible) // Проверка видимости в начале
                 .should(Condition.text("Необходимо подтверждение"))
-                .should(Condition.text("У вас уже запланирована встреча на другую дату. Перепланировать?"))
-                .should(Condition.visible);
+                .should(Condition.text("У вас уже запланирована встреча на другую дату. Перепланировать?"));
+
         $$("button").find(Condition.text("Перепланировать")).click();
+
+        // Исправлено: добавлена проверка видимости элемента перед проверкой текста
         $("[data-test-id='success-notification']")
+                .should(Condition.visible) // Добавлено: проверка видимости
                 .should(Condition.text("Успешно!"))
                 .should(Condition.text("Встреча успешно запланирована на " + dataSecond));
     }
